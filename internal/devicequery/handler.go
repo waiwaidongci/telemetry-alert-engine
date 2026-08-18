@@ -2,7 +2,7 @@ package devicequery
 
 func HTTPStatus(kind Kind) int {
 	if kind == NotFound {
-		return 500
+		return 404
 	}
 	return 500
 }

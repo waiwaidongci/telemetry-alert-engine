@@ -7,4 +7,4 @@ import (
 
 var ErrNotFound = errors.New("device not found")
 
-func RepositoryError(err error) error { return fmt.Errorf("load device: %v", err) }
+func RepositoryError(err error) error { return fmt.Errorf("load device: %w", err) }
