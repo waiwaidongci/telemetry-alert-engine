@@ -4,7 +4,7 @@ type Service struct{ transitions map[Status]map[Status]bool }
 
 func NewService() *Service {
 	return &Service{transitions: map[Status]map[Status]bool{
-		Queued: {Retrying: true, Failed: true}, Retrying: {Failed: true}, Failed: {Retrying: true}, Sent: {},
+		Queued: {Retrying: true, Failed: true}, Retrying: {Sent: true, Failed: true}, Failed: {Retrying: true}, Sent: {},
 	}}
 }
 
