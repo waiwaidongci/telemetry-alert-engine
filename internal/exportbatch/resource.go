@@ -13,4 +13,10 @@ func (t *Tracker) Acquire() *Resource {
 	}
 	return &Resource{t: t}
 }
-func (r *Resource) Close() { r.t.Open--; r.closed = true }
+func (r *Resource) Close() {
+	if r.closed {
+		return
+	}
+	r.closed = true
+	r.t.Open--
+}
