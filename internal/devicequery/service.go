@@ -1,5 +1,7 @@
 package devicequery
 
+import "errors"
+
 type Kind string
 
 const (
@@ -8,7 +10,7 @@ const (
 )
 
 func Classify(err error) Kind {
-	if err == ErrNotFound {
+	if errors.Is(err, ErrNotFound) {
 		return NotFound
 	}
 	return Internal
