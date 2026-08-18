@@ -15,10 +15,10 @@ func TestRetrySuccessReachesSentAndActiveQueryIncludesRetrying(t *testing.T) {
 		t.Fatal("successful retry was rejected")
 	}
 	if d.Status != Sent {
-		t.Fatalf("status = %q, want sent", d.Status)
+		t.Fatalf("status=%q", d.Status)
 	}
 	items := Active([]Delivery{{ID: "d2", Status: Retrying}, {ID: "d3", Status: Sent}})
 	if len(items) != 1 || items[0].ID != "d2" {
-		t.Fatalf("active items = %#v", items)
+		t.Fatalf("active=%#v", items)
 	}
 }

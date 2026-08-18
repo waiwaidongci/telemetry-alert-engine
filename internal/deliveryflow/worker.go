@@ -1,3 +1,3 @@
 package deliveryflow
 
-func RetrySucceeded(s *Service, d *Delivery) bool { return s.Transition(d, Failed) }
+func RetrySucceeded(s *Service, d *Delivery) bool { return s.Transition(d, Sent) }

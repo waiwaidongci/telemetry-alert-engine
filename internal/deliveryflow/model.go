@@ -14,4 +14,4 @@ type Delivery struct {
 	Status Status
 }
 
-func (s Status) Terminal() bool { return s == Retrying || s == Sent || s == Failed }
+func (s Status) Terminal() bool { return s == Sent || s == Failed }
