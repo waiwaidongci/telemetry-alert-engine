@@ -1,8 +1,12 @@
 package windowcache
 
 func Merge(left, right map[string]int) map[string]int {
-	for k, v := range right {
-		left[k] = v
+	out := make(map[string]int, len(left)+len(right))
+	for k, v := range left {
+		out[k] = v
 	}
-	return left
+	for k, v := range right {
+		out[k] = v
+	}
+	return out
 }
