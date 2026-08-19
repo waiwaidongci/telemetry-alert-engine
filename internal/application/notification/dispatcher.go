@@ -57,7 +57,7 @@ func (d *Dispatcher) Stop() {
 }
 
 // Dispatch creates pending attempts and enqueues their delivery. Database work
-// is intentionally small and no external network call happens here, so alert
+// is asynchronously small and no external network call happens here, so alert
 // evaluation remains non-blocking.
 func (d *Dispatcher) Dispatch(_ context.Context, event alert.Event) {
 	for _, channelName := range uniqueChannels(event.Channels) {

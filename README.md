@@ -30,11 +30,21 @@
 ├── deploy/                 # Dockerfile 与 PostgreSQL compose 参考配置
 ├── internal/
 │   ├── adapter/            # 指标、通知、限流、时钟适配器
+│   ├── alertsnapshot/      # 告警规则并发快照与缓存发布
 │   ├── application/        # 服务与端口接口
 │   ├── config/             # 配置加载
+│   ├── deliveryerrors/     # 投递路由错误聚合与分类
+│   ├── dispatchcontext/    # 异步派发超时和取消传播
 │   ├── domain/             # 领域模型
+│   ├── escalationstate/    # 告警升级状态流转
+│   ├── exportlease/        # 批量导出资源租约与事务
 │   ├── infrastructure/     # SQLite 与仓储实现
 │   ├── logging/            # 结构化日志上下文
+│   ├── metricwindow/       # 遥测窗口隔离与缓存
+│   ├── policyerrors/       # 告警策略限制错误分类
+│   ├── reconciliationpipe/ # 多源遥测对账管线
+│   ├── routingpolicy/      # 通知路由缺省策略
+│   ├── sweepcontext/       # 定时扫描上下文生命周期
 │   └── system/             # 时钟、ID、令牌哈希
 ├── migrations/postgres/    # PostgreSQL 生产迁移
 ├── scripts/                # 本地开发验证脚本
@@ -165,7 +175,7 @@ go build ./...
 go test ./...
 ```
 
-`go vet ./...`、`go build ./...`、`go test ./...` 均通过；测试命令显示所有包 `[no test files]`。
+`go vet ./...`、`go build ./...`、`go test ./...` 均通过；核心运行时机制包包含并发、取消传播、错误链、资源释放、状态机和快照隔离测试。
 
 `scripts/run-dev.sh` 验证输出摘要：
 
@@ -208,5 +218,5 @@ service stopped
 
 ```text
 find cmd internal api -name '*.go' -type f ! -name '*_test.go' -print0 | xargs -0 wc -l | tail -1
-4870 total
+6219 total
 ```
