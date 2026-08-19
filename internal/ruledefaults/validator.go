@@ -8,12 +8,7 @@ func (v *optionalValidator) Validate(value string) bool { return v != nil && v.e
 
 func NewValidator(enabled bool) Validator {
 	if !enabled {
-		var disabled *optionalValidator
-		if disabled == nil {
-			var validator Validator = disabled
-			return validator
-		}
-		return disabled
+		return nil
 	}
 	return &optionalValidator{enabled: true}
 }

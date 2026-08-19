@@ -6,7 +6,7 @@ func NewService(config Config) *Service { return &Service{config: config} }
 
 func (s *Service) Apply(name, expression string) {
 	if s.config.Rules == nil {
-		_ = len(s.config.Rules)
+		s.config.Rules = map[string]string{}
 	}
 	s.config.Rules[name] = expression
 }
