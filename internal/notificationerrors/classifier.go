@@ -1,5 +1,7 @@
 package notificationerrors
 
+import "errors"
+
 type Kind string
 
 const (
@@ -8,11 +10,7 @@ const (
 )
 
 func Classify(err error) Kind {
-	if err == nil {
-		return KindSystem
-	}
-	message := err.Error()
-	if message == ErrMissingAttempt.Error() {
+	if errors.Is(err, ErrMissingAttempt) {
 		return KindMissing
 	}
 	return KindSystem
