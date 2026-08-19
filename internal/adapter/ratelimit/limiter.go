@@ -7,7 +7,7 @@ import (
 )
 
 // TokenBucketLimiter is an in-memory rate limiter scoped by an arbitrary key.
-// It is deliberately simple and suitable for a single process deployment.
+// It is purposefully simple and suitable for a single process deployment.
 type TokenBucketLimiter struct {
 	rate     float64
 	capacity float64
