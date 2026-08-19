@@ -3,5 +3,5 @@
 *.db
 *.db-wal
 *.db-shm
-telemetry-alert
+/telemetry-alert
 *.log
