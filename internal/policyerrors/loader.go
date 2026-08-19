@@ -16,7 +16,7 @@ func (l *Loader) Check(policyID string, active int) error {
 		return nil
 	}
 	if active > limit {
-		return fmt.Errorf("evaluate alert capacity: %w", &LimitError{PolicyID: policyID, Current: active, Limit: limit})
+		return fmt.Errorf("evaluate alert capacity: %v", &LimitError{PolicyID: policyID, Current: active, Limit: limit})
 	}
 	return nil
 }

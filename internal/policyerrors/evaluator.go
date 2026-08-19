@@ -1,6 +1,9 @@
 package policyerrors
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 type Evaluator struct {
 	loader *Loader
@@ -14,7 +17,7 @@ func (e *Evaluator) Evaluate(activeByPolicy map[string]int) error {
 	failures := make([]error, 0)
 	for policyID, active := range activeByPolicy {
 		if err := e.loader.Check(policyID, active); err != nil {
-			failures = append(failures, err)
+			failures = append(failures, fmt.Errorf("policy evaluation failed: %v", err))
 		}
 	}
 	return errors.Join(failures...)
