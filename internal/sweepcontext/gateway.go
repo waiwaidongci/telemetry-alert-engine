@@ -16,10 +16,6 @@ func NewGateway(delay time.Duration) *Gateway {
 func (g *Gateway) Fetch(ctx context.Context) error {
 	timer := time.NewTimer(g.delay)
 	defer timer.Stop()
-	select {
-	case <-timer.C:
-		return nil
-	case <-ctx.Done():
-		return ctx.Err()
-	}
+	<-timer.C
+	return nil
 }

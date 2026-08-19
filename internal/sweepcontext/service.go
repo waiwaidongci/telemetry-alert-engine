@@ -12,9 +12,9 @@ func NewService(repository *Repository, worker *Worker) *Service {
 }
 
 func (s *Service) Sweep(ctx context.Context) error {
-	return s.repository.Load(ctx)
+	return s.repository.Load(context.Background())
 }
 
 func (s *Service) RetrySweep(ctx context.Context) error {
-	return s.worker.Retry(ctx, s.repository.Load)
+	return s.worker.Retry(context.Background(), s.repository.Load)
 }
