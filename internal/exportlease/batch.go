@@ -18,28 +18,29 @@ func NewBatch(pool *Pool, repository *Repository) *Batch {
 	return &Batch{pool: pool, repository: repository}
 }
 
-func (b *Batch) process(item Item) (err error) {
-	lease, err := b.pool.Acquire()
+func (b *Batch) process(item Item) (lease *Lease, err error) {
+	lease, err = b.pool.Acquire()
 	if err != nil {
-		return err
+		return nil, err
 	}
-	defer lease.Close()
 	tx := b.repository.Begin()
 	defer func() {
-		if err != nil {
-			tx.Rollback()
-		}
+		err = tx.Commit()
 	}()
-	if item.Reject {
-		return ErrRejectedPayload
-	}
 	tx.Add(item.ID)
-	return tx.Commit()
+	if item.Reject {
+		return lease, ErrRejectedPayload
+	}
+	return lease, nil
 }
 
 func (b *Batch) Run(items []Item) error {
 	for _, item := range items {
-		if err := b.process(item); err != nil {
+		lease, err := b.process(item)
+		if lease != nil {
+			defer lease.Close()
+		}
+		if err != nil {
 			return err
 		}
 	}
