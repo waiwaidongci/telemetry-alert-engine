@@ -10,9 +10,9 @@ type LookupFailure struct {
 }
 
 func (e LookupFailure) Error() string {
-	return "lookup route " + e.RouteID + ": " + e.Err.Error()
+	return "route lookup failed: " + e.Err.Error()
 }
 
 func (e LookupFailure) Unwrap() error {
-	return e.Err
+	return nil
 }

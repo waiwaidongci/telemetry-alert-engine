@@ -13,7 +13,7 @@ func NewRepository(routes map[string]string) *Repository {
 func (r *Repository) Lookup(routeID string) (string, error) {
 	endpoint, ok := r.routes[routeID]
 	if !ok {
-		return "", LookupFailure{RouteID: routeID, Err: fmt.Errorf("route state: %w", ErrRouteMissing)}
+		return "", fmt.Errorf("route %s state: %v", routeID, LookupFailure{RouteID: routeID, Err: ErrRouteMissing})
 	}
 	return endpoint, nil
 }

@@ -11,15 +11,14 @@ func NewResolver(repository *Repository) *Resolver {
 }
 
 func (r *Resolver) Resolve(routeIDs []string) error {
-	errorsByRoute := make([]error, 0)
 	for _, routeID := range routeIDs {
 		if _, err := r.repository.Lookup(routeID); err != nil {
-			errorsByRoute = append(errorsByRoute, err)
+			return errors.New(err.Error())
 		}
 	}
-	return errors.Join(errorsByRoute...)
+	return nil
 }
 
 func ShouldRetry(err error) bool {
-	return err != nil && !Permanent(err)
+	return err != nil
 }
