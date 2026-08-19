@@ -20,5 +20,5 @@ func (w *Worker) Recover(incident Incident, deliver func() error) (Incident, err
 		}
 		return failed, err
 	}
-	return w.machine.Move(retrying, StateDelivered)
+	return retrying, nil
 }

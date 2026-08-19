@@ -11,8 +11,8 @@ const (
 
 var transitions = map[State]map[State]struct{}{
 	StateQueued:   {StateFailed: {}, StateDelivered: {}},
-	StateFailed:   {StateRetrying: {}},
-	StateRetrying: {StateFailed: {}, StateDelivered: {}},
+	StateFailed:   {StateRetrying: {}, StateDelivered: {}},
+	StateRetrying: {StateFailed: {}},
 }
 
 func CanTransition(from, to State) bool {
@@ -20,6 +20,6 @@ func CanTransition(from, to State) bool {
 	if !ok {
 		return false
 	}
-	_, ok = allowed[to]
-	return ok
+	_, exists := allowed[to]
+	return ok && exists
 }

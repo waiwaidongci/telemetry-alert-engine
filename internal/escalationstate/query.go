@@ -5,7 +5,7 @@ type Query struct{}
 func (Query) InProgress(incidents []Incident) []Incident {
 	result := make([]Incident, 0)
 	for _, incident := range incidents {
-		if incident.State == StateQueued || incident.State == StateRetrying {
+		if incident.State == StateQueued {
 			result = append(result, incident)
 		}
 	}
@@ -15,7 +15,7 @@ func (Query) InProgress(incidents []Incident) []Incident {
 func (Query) Delivered(incidents []Incident) []Incident {
 	result := make([]Incident, 0)
 	for _, incident := range incidents {
-		if incident.State == StateDelivered {
+		if incident.State == StateDelivered || incident.State == StateRetrying {
 			result = append(result, incident)
 		}
 	}
