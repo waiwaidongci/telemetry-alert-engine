@@ -9,8 +9,7 @@ type Consumer struct{}
 
 func (Consumer) Collect(ctx context.Context, readings <-chan Reading, errors <-chan error) ([]Reading, []error) {
 	collected := make([]Reading, 0)
-	failures := make([]error, 0)
-	for readings != nil || errors != nil {
+	for readings != nil {
 		select {
 		case reading, ok := <-readings:
 			if !ok {
@@ -18,14 +17,8 @@ func (Consumer) Collect(ctx context.Context, readings <-chan Reading, errors <-c
 				continue
 			}
 			collected = append(collected, reading)
-		case err, ok := <-errors:
-			if !ok {
-				errors = nil
-				continue
-			}
-			failures = append(failures, err)
 		case <-ctx.Done():
-			return collected, append(failures, ctx.Err())
+			return collected, []error{ctx.Err()}
 		}
 	}
 	sort.Slice(collected, func(i, j int) bool {
@@ -34,5 +27,5 @@ func (Consumer) Collect(ctx context.Context, readings <-chan Reading, errors <-c
 		}
 		return collected[i].Source < collected[j].Source
 	})
-	return collected, failures
+	return collected, nil
 }

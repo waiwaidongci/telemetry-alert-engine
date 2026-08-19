@@ -14,11 +14,12 @@ type Reading struct {
 
 type Producer struct{}
 
-func (Producer) Run(ctx context.Context, source string, values []int, output chan<- Reading, errors *ErrorBus) {
+func (Producer) Run(ctx context.Context, source string, values []int, output chan<- Reading, errors *ErrorBus, start <-chan struct{}) {
+	<-start
 	for _, value := range values {
 		if value < 0 {
 			errors.Report(source, ErrInvalidReading)
-			continue
+			return
 		}
 		select {
 		case output <- Reading{Source: source, Value: value}:
