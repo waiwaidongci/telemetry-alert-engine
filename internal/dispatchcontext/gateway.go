@@ -28,11 +28,15 @@ func (g *Gateway) Send(ctx context.Context, target string) error {
 	g.mu.Unlock()
 	timer := time.NewTimer(delay)
 	defer timer.Stop()
-	<-timer.C
-	g.mu.Lock()
-	g.sent = append(g.sent, target)
-	g.mu.Unlock()
-	return nil
+	select {
+	case <-ctx.Done():
+		return context.Cause(ctx)
+	case <-timer.C:
+		g.mu.Lock()
+		g.sent = append(g.sent, target)
+		g.mu.Unlock()
+		return nil
+	}
 }
 
 func (g *Gateway) Sent() []string {
