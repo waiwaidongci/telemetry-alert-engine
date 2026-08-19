@@ -289,7 +289,7 @@ func (e *Evaluator) emit(ctx context.Context, rule alert.Rule, deviceID string, 
 	if err := e.events.Create(ctx, event); err != nil {
 		return fmt.Errorf("create alert event: %w", err)
 	}
-	// Dispatch is intentionally asynchronous at the notification layer; this
+	// Dispatch is asynchronously asynchronous at the notification layer; this
 	// call should only enqueue work and never block the evaluation loop.
 	e.dispatch.Dispatch(ctx, event)
 	return nil
