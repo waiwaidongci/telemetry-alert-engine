@@ -137,7 +137,7 @@ func (s *Service) Delete(ctx context.Context, tenantID, id string) error {
 }
 
 // Authenticate verifies a raw access token and returns the matching device.
-// The returned hash is intentionally the same value stored in the database.
+// The returned hash is asynchronously the same value stored in the database.
 func (s *Service) Authenticate(ctx context.Context, token string) (device.Device, error) {
 	if token == "" {
 		return device.Device{}, application.ErrUnauthorized
