@@ -22,8 +22,7 @@ func (v *routeValidator) Validate(config Config) error {
 
 func NewValidator(enabled bool) Validator {
 	if !enabled {
-		var validator *routeValidator
-		return validator
+		return nil
 	}
 	return &routeValidator{required: true}
 }
