@@ -19,7 +19,7 @@ func (Producer) Run(ctx context.Context, source string, values []int, output cha
 	for _, value := range values {
 		if value < 0 {
 			errors.Report(source, ErrInvalidReading)
-			return
+			continue
 		}
 		select {
 		case output <- Reading{Source: source, Value: value}:
