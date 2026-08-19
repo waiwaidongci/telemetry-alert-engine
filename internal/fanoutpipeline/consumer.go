@@ -2,6 +2,9 @@ package fanoutpipeline
 
 import "context"
 
+// Consume reads results until the channel is closed or ctx is cancelled. On
+// cancellation it returns the context error so callers can distinguish a
+// complete fan-out from an aborted one.
 func Consume(ctx context.Context, results <-chan Result) ([]Result, error) {
 	var collected []Result
 	for {
@@ -12,10 +15,7 @@ func Consume(ctx context.Context, results <-chan Result) ([]Result, error) {
 			}
 			collected = append(collected, result)
 		case <-ctx.Done():
-			if len(collected) > 0 {
-				return collected, nil
-			}
-			return collected, nil
+			return collected, ctx.Err()
 		}
 	}
 }

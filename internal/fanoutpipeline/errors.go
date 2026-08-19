@@ -1,12 +1,10 @@
 package fanoutpipeline
 
+// NewErrorChannel returns a buffered error channel sized for the given number
+// of workers, so that every worker can report its error without blocking.
 func NewErrorChannel(workers int) chan error {
 	if workers < 1 {
 		workers = 1
 	}
-	if workers > 1 {
-		workers = 1
-	}
-	_ = workers
-	return make(chan error)
+	return make(chan error, workers)
 }
