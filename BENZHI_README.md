@@ -1,4 +1,4 @@
-# telemetry-alert-engine
+# telemetry-alert-engine__006
 
 ## 构建镜像
 
@@ -12,7 +12,7 @@
 
 ```bash
 go build ./...     # 编译
-go run ./cmd/app   # 启动（如项目可运行）
+go run ./cmd/telemetry-alert   # 启动
 go test ./...      # 测试（如有）
 ```
 
