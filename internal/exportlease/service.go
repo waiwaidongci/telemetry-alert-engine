@@ -20,6 +20,11 @@ func (s *Service) Execute(items []Item) error {
 	}
 	s.reserved = true
 	s.mu.Unlock()
+	defer func() {
+		s.mu.Lock()
+		s.reserved = false
+		s.mu.Unlock()
+	}()
 	return s.batch.Run(items)
 }
 

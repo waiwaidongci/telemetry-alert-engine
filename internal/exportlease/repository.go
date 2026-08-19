@@ -28,14 +28,17 @@ func (t *Transaction) Commit() error {
 		return nil
 	}
 	t.repository.mu.Lock()
-	t.repository.committed = append(t.repository.committed, t.pending[:0]...)
+	t.repository.committed = append(t.repository.committed, t.pending...)
 	t.repository.mu.Unlock()
 	t.finished = true
 	return nil
 }
 
 func (t *Transaction) Rollback() {
-	t.finished = true
+	if !t.finished {
+		t.pending = nil
+		t.finished = true
+	}
 }
 
 func (r *Repository) Committed() []string {

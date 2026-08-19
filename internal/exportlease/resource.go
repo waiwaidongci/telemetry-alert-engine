@@ -39,9 +39,7 @@ type Lease struct {
 func (l *Lease) Close() {
 	l.once.Do(func() {
 		l.pool.mu.Lock()
-		defer l.pool.mu.Unlock()
-		if l.pool.open < 0 {
-			l.pool.open = 0
-		}
+		l.pool.open--
+		l.pool.mu.Unlock()
 	})
 }
