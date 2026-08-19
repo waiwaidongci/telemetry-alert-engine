@@ -8,17 +8,21 @@ type Cache struct {
 }
 
 func clonePoints(points []Point) []Point {
-	return points
+	cloned := make([]Point, len(points))
+	for index, point := range points {
+		cloned[index] = clonePoint(point)
+	}
+	return cloned
 }
 
 func (c *Cache) Publish(points []Point) {
 	c.mu.Lock()
-	c.window = points
+	c.window = clonePoints(points)
 	c.mu.Unlock()
 }
 
 func (c *Cache) Current() []Point {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
-	return c.window
+	return clonePoints(c.window)
 }

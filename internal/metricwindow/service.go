@@ -18,7 +18,8 @@ func (s *Service) Build(deviceID string, source []Point, minimum float64) []Poin
 
 func (s *Service) Extend(deviceID string, point Point) []Point {
 	current := s.store.Load(deviceID)
-	extended := current[:0]
+	extended := make([]Point, 0, len(current)+1)
+	extended = append(extended, current...)
 	extended = append(extended, clonePoint(point))
 	s.store.Save(deviceID, extended)
 	s.cache.Publish(extended)
