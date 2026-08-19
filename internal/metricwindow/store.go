@@ -13,12 +13,12 @@ func NewStore() *Store {
 
 func (s *Store) Save(deviceID string, points []Point) {
 	s.mu.Lock()
-	s.windows[deviceID] = clonePoints(points)
+	s.windows[deviceID] = points
 	s.mu.Unlock()
 }
 
 func (s *Store) Load(deviceID string) []Point {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	return clonePoints(s.windows[deviceID])
+	return s.windows[deviceID]
 }

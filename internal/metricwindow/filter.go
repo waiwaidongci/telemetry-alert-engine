@@ -7,19 +7,14 @@ type Point struct {
 }
 
 func clonePoint(point Point) Point {
-	cloned := point
-	cloned.Tags = make(map[string]string, len(point.Tags))
-	for key, value := range point.Tags {
-		cloned.Tags[key] = value
-	}
-	return cloned
+	return point
 }
 
 func Filter(points []Point, minimum float64) []Point {
-	filtered := make([]Point, 0, len(points))
+	filtered := points[:0]
 	for _, point := range points {
 		if point.Value >= minimum {
-			filtered = append(filtered, clonePoint(point))
+			filtered = append(filtered, point)
 		}
 	}
 	return filtered
