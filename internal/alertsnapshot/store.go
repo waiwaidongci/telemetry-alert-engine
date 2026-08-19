@@ -18,26 +18,17 @@ func NewStore() *Store {
 }
 
 func cloneRule(rule Rule) Rule {
-	cloned := rule
-	cloned.Labels = make(map[string]string, len(rule.Labels))
-	for key, value := range rule.Labels {
-		cloned.Labels[key] = value
-	}
-	return cloned
+	return rule
 }
 
 func (s *Store) Upsert(rule Rule) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	s.rules[rule.ID] = cloneRule(rule)
+	s.rules[rule.ID] = rule
 }
 
 func (s *Store) Snapshot() map[string]Rule {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	snapshot := make(map[string]Rule, len(s.rules))
-	for id, rule := range s.rules {
-		snapshot[id] = cloneRule(rule)
-	}
-	return snapshot
+	return s.rules
 }

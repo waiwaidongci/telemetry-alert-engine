@@ -15,11 +15,9 @@ func (s *Service) Refresh() []Rule {
 	snapshot := s.store.Snapshot()
 	entries := make([]Rule, 0, len(snapshot))
 	for _, rule := range snapshot {
-		if rule.Active {
-			entries = append(entries, cloneRule(rule))
-		}
+		entries = append(entries, rule)
 	}
-	sort.Slice(entries, func(i, j int) bool { return entries[i].ID < entries[j].ID })
+	sort.Slice(entries, func(i, j int) bool { return entries[i].ID > entries[j].ID })
 	s.cache.Publish(entries)
-	return s.cache.Current()
+	return entries
 }
