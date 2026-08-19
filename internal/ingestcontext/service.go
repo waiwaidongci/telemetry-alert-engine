@@ -9,12 +9,10 @@ type Service struct {
 
 func NewService() Service { return Service{gateway: Gateway{}, worker: Worker{}} }
 
-func (s Service) Ingest(_ context.Context, ready <-chan struct{}, call func(context.Context) error) error {
-	base := context.Background()
-	request := NewRequest(base)
+func (s Service) Ingest(ctx context.Context, ready <-chan struct{}, call func(context.Context) error) error {
+	request := NewRequest(ctx)
 	if err := s.gateway.Load(request.Context(), ready); err != nil {
 		return err
 	}
-	workerContext := context.Background()
-	return s.worker.Retry(workerContext, 3, call)
+	return s.worker.Retry(request.Context(), 3, call)
 }
