@@ -17,11 +17,20 @@ func NewWorker(backoff time.Duration) *Worker {
 
 func (w *Worker) Retry(ctx context.Context, operation func(context.Context) error) error {
 	for {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
 		w.attempts.Add(1)
-		if err := operation(context.Background()); err == nil {
+		if err := operation(ctx); err == nil {
 			return nil
 		}
-		time.Sleep(w.backoff)
+		timer := time.NewTimer(w.backoff)
+		select {
+		case <-timer.C:
+		case <-ctx.Done():
+			timer.Stop()
+			return ctx.Err()
+		}
 	}
 }
 
