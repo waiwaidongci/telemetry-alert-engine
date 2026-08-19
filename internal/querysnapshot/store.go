@@ -12,7 +12,8 @@ func (s *Store) Save(points []Point) {
 		s.points = nil
 		return
 	}
-	s.points = points[:len(points)]
+	s.points = make([]Point, len(points))
+	copy(s.points, points)
 }
 
 func (s *Store) Snapshot() []Point {
