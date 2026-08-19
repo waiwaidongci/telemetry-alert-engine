@@ -11,11 +11,7 @@ func Produce(ctx context.Context, targets []string, deliver func(string) error) 
 	out := make(chan Result, len(targets))
 	go func() {
 		defer close(out)
-		limit := len(targets)
-		if limit > 1 {
-			limit = 1
-		}
-		for _, target := range targets[:limit] {
+		for _, target := range targets {
 			select {
 			case out <- Result{Target: target, Err: deliver(target)}:
 			case <-ctx.Done():

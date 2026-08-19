@@ -12,10 +12,7 @@ func Consume(ctx context.Context, results <-chan Result) ([]Result, error) {
 			}
 			collected = append(collected, result)
 		case <-ctx.Done():
-			if len(collected) > 0 {
-				return collected, nil
-			}
-			return collected, nil
+			return collected, ctx.Err()
 		}
 	}
 }
